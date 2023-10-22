@@ -27,7 +27,7 @@ struct dfa
 extern dfa dfa_generated;
 
 // 打印dfa
-void printDfa();
+void printDFA(dfa dfa_t);
 
 // 构造dfa
 void buildDFA(struct expr e);

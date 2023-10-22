@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <string.h>
 
+extern int regularPrase();
+
 using namespace std;
 
 char outfile[256] = "a.dot";
@@ -16,8 +18,8 @@ void test01()
     e2 = closureExprval(e2);
     expr* e3 = connectExprval(e1, e2);
     buildDFA(*e3);
-    printDfa();
-    //printExprval(e3);
+    printDFA(dfa_generated);
+    printExprval(e3);
 }
 
 int main(int argc, char *argv[])
@@ -51,7 +53,7 @@ int main(int argc, char *argv[])
         printf("error opening file\n");
         exit(-1);
     }
-    test01();
     
+    regularPrase();
     fclose(fp);
 }

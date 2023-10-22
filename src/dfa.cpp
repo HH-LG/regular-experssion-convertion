@@ -81,7 +81,8 @@ void buildDFA(struct expr e)
     //清空已有的dfa
     dfa_generated.graph.clear();
     dfa_generated.finish_state.clear();
-    bool have_dead = false;
+    // 死状态
+    // bool have_dead = false;
 
     // 初始化dfa
     state* start = e.start;
@@ -91,15 +92,15 @@ void buildDFA(struct expr e)
     dState s;
     s.states.insert(start);
     dState s0 = e_closure(s);
-    // printf("e_closure(s0): ");
-    // for (state *s0: s0.states)
-    // {
-        // printf("%d ", s0->id);
-    // }
-    // printf("\n");
+    printf("e_closure(s0): ");
+    for (state *s0: s0.states)
+    {
+        printf("%d ", s0->id);
+    }
+    printf("\n");
     if (s0.states.find(end) != s0.states.end())
     {   
-        // printf("finish state: %d\n", dfa_state_cnt);
+        printf("finish state: %d\n", dfa_state_cnt);
         dfa_generated.finish_state.insert(dfa_state_cnt);
     }
     stack<dState> stateStack;
@@ -121,34 +122,21 @@ void buildDFA(struct expr e)
             if (ch == epsilon)
                 continue;
             dState nextDState = e_closure(move(curDState, ch));
-            // printf("e_closure(move(%d, %c)): ", state_to_index[curDState], ch);
-            // for (state *s0: nextDState.states)
-            // {
-            //     printf("%d ", s0->id);
-            // }
-            // printf("\n");
-            
-            // 判断是否已经包含
-            bool isContained = false;
-            for (auto s = dfaStates.begin(); s != dfaStates.end(); s++)
-            {   
-                if (contains(*s, nextDState))
-                {
-                    // printf("isContained\n");
-                    if (nextDState.states.empty() && have_dead == false)
-                    {
-                        // printf("dead state: %d\n", dfa_state_cnt);
-                        have_dead = true;
-                        break;
-                    }
-                    
-                    isContained = true;
-                    break;
-                }
+            printf("e_closure(move(%d, %c)): ", state_to_index[curDState], ch);
+            for (state *s0: nextDState.states)
+            {
+                printf("%d ", s0->id);
             }
+            printf("\n");
+            if (nextDState.states.empty())
+            {
+                continue;;
+            }
+            // 判断是否已经包含
+            bool isContained = dfaStates.find(nextDState) != dfaStates.end();
             if (!isContained)
             {
-                // printf("state: %d\n", dfa_state_cnt);
+                printf("state: %d\n", dfa_state_cnt);
                 // 加入新的状态
                 stateStack.push(nextDState);
                 //对于dfa的计算
@@ -166,7 +154,7 @@ void buildDFA(struct expr e)
     
 }
 
-void printDfa()
+void printDFA(dfa dfa_t)
 {
    // printf("charset: ");
    // for (char ch: charSet)
@@ -174,14 +162,14 @@ void printDfa()
    //     printf("%c ", ch);
    // }
     printf("digraph G {\n");
-    for (auto state: dfa_generated.graph)
+    for (auto state: dfa_t.graph)
     {
         for (auto edge: state.second)
         {
             printf("\t%d -> %d [label=\"%c\"];\n", state.first, edge.second, edge.first);
         }
     }
-    for (auto state: dfa_generated.finish_state)
+    for (auto state: dfa_t.finish_state)
     {
         printf("\t%d [shape=doublecircle];\n", state);
     }

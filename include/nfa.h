@@ -11,6 +11,7 @@ using namespace std;
 
 #define epsilon '#'
 
+// 将全局变量extern写在头文件，这样所有的文件都能使用
 extern int CurrentState;
 extern set<char> charSet;
 // 状态的定义
