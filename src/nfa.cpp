@@ -1,29 +1,27 @@
 #include "nfa.h"
+#include <unordered_map>
+#include <iostream>
+#include <set>
+#include <vector>
+using namespace std;
 
+set<char> charSet;
 int CurrentState = 0;
-struct state* newState(struct edge* nextEdge, int nextNum)
+struct state* newState()
 {
-    struct state* s = (struct state*)malloc(sizeof(struct state));
+    state* s = new state();
     s->id = CurrentState++;
-    s->nextNum = nextNum;
-    if (nextNum > 0)
-    {
-        for (int i = 0; i < nextNum; i++)
-        {
-            s->nextEdge[i] = nextEdge[i];
-        }
-    }
-    else
-    {
-        s->nextEdge[0].nextState = NULL;
-    }
     return s;
 }
 
 struct expr* newExprval(char ch)
 {
-    struct state* start = newState(NULL,0);
-    struct state* end = newState(NULL,0);
+    //添加到字符集
+    charSet.insert(ch);
+
+    //新建状态
+    struct state* start = newState();
+    struct state* end = newState();
     addEdge(start, ch, end);
     return newExprvalSE(start,end);
 }
@@ -44,37 +42,34 @@ void printState(struct state* s)
 
     stateStack[size++] = s;
 
-    FILE *fp = freopen("output.dot", "w", stdout);  //重定向
-    if (fp == NULL)
-    {
-        printf("error opening file\n");
-        exit(-1);
-    }
-
     printf("digraph G {\n");
     while(size)
     {
         struct state* curState = stateStack[--size];
         
         stateUsed[curState->id] = true;
-        if (curState->nextNum == 0)
-            continue;
 
-        for (int i = 0; i < curState->nextNum; i++)
+        for (auto edge: curState->edges)
         {
-            printf("\t%d -> %d [label=\"%c\"];\n", curState->id, curState->nextEdge[i].nextState->id, curState->nextEdge[i].ch);
+            char ch = edge.first;
+            vector<state*> nextStates = edge.second;
+            for (auto nextState: nextStates)
+                printf("\t%d -> %d [label=\"%c\"];\n", curState->id, nextState->id, ch);
         }
 
-        for (int i = 0; i < curState->nextNum; i++)
+        for (auto edge: curState->edges)
         {
-            if (!stateUsed[curState->nextEdge[i].nextState->id])
+            vector<state*> nextStates = edge.second;
+            for (auto nextState: nextStates) 
             {
-                stateStack[size++] = curState->nextEdge[i].nextState;
+                if (!stateUsed[nextState->id])
+                {
+                    stateStack[size++] = nextState; 
+                }
             }
         }
     }
     printf("}\n");
-    fclose(fp);
 }
 
 void printExprval(struct expr* expr)
@@ -88,21 +83,18 @@ struct expr* connectExprval(struct expr* expr1,struct expr* expr2)
         return expr1;
     struct state *interS = expr1->end;
     struct state *interE = expr2->start;
-    interS->nextNum = interE->nextNum;
 
-    for (int i = 0; i< interE->nextNum; i++)
-    {
-        interS->nextEdge[i] = interE->nextEdge[i];
-    }
+    interS->edges = interE->edges;
     return newExprvalSE(expr1->start,expr2->end);
 }
 
 void addEdge(struct state *s, char ch, struct state *nextState)
 {
-    struct edge e;
-    e.ch = ch;
-    e.nextState = nextState;
-    s->nextEdge[s->nextNum++] = e;
+    // 添加到字符集
+    charSet.insert(ch);
+
+    // 用map添加一条边
+    s->edges[ch].push_back(nextState);
 }
 
 struct expr* closureExprval(struct expr* expr)
@@ -110,8 +102,8 @@ struct expr* closureExprval(struct expr* expr)
     struct state *start = expr->start;
     struct state *end = expr->end;
 
-    struct state *new_start = newState(NULL, 0);
-    struct state *new_end = newState(NULL, 0);
+    struct state *new_start = newState();
+    struct state *new_end = newState();
 
     addEdge(end, epsilon, start); //反向边
     addEdge(new_start, epsilon, start);
@@ -127,8 +119,8 @@ struct expr* orExprval(struct expr* expr1,struct expr* expr2)
     struct state *start2 = expr2->start;
     struct state *end2 = expr2->end;
 
-    struct state *new_start = newState(NULL, 0);
-    struct state *new_end = newState(NULL, 0);
+    struct state *new_start = newState();
+    struct state *new_end = newState();
 
     addEdge(new_start, epsilon, start1);
     addEdge(new_start, epsilon, start2);

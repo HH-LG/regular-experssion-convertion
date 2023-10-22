@@ -23,7 +23,7 @@ $(BINARY):$(OBJ)
 app: $(BINARY)
 
 run:app
-	$(BINARY)
+	$(BINARY) -o out.dot
 
 clean:
 	rm -rf $(BUILD_PATH) 
