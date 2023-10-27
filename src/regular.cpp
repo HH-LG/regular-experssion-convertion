@@ -131,8 +131,7 @@ extern int yydebug;
     L_BRAC = 260,                  /* L_BRAC  */
     R_BRAC = 261,                  /* R_BRAC  */
     QUIT = 262,                    /* QUIT  */
-    UNIT = 263,                    /* UNIT  */
-    CONNECT = 264                  /* CONNECT  */
+    UNIT = 263                     /* UNIT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -147,7 +146,6 @@ extern int yydebug;
 #define R_BRAC 261
 #define QUIT 262
 #define UNIT 263
-#define CONNECT 264
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -158,7 +156,7 @@ union YYSTYPE
     wchar_t chval;
     struct expr* exprval;
 
-#line 162 "src/regular.cpp"
+#line 160 "src/regular.cpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -187,13 +185,12 @@ enum yysymbol_kind_t
   YYSYMBOL_R_BRAC = 6,                     /* R_BRAC  */
   YYSYMBOL_QUIT = 7,                       /* QUIT  */
   YYSYMBOL_UNIT = 8,                       /* UNIT  */
-  YYSYMBOL_CONNECT = 9,                    /* CONNECT  */
-  YYSYMBOL_10_ = 10,                       /* ';'  */
-  YYSYMBOL_YYACCEPT = 11,                  /* $accept  */
-  YYSYMBOL_lines = 12,                     /* lines  */
-  YYSYMBOL_expr = 13,                      /* expr  */
-  YYSYMBOL_unit_seq = 14,                  /* unit_seq  */
-  YYSYMBOL_unit = 15                       /* unit  */
+  YYSYMBOL_9_ = 9,                         /* ';'  */
+  YYSYMBOL_YYACCEPT = 10,                  /* $accept  */
+  YYSYMBOL_lines = 11,                     /* lines  */
+  YYSYMBOL_Expr = 12,                      /* Expr  */
+  YYSYMBOL_UnitSeq = 13,                   /* UnitSeq  */
+  YYSYMBOL_Unit = 14                       /* Unit  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -521,10 +518,10 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   13
+#define YYLAST   14
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  11
+#define YYNTOKENS  10
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
@@ -533,7 +530,7 @@ union yyalloc
 #define YYNSTATES  16
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   264
+#define YYMAXUTOK   263
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -552,7 +549,7 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    10,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     9,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -573,15 +570,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9
+       5,     6,     7,     8
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    43,    43,    51,    52,    55,    56,    59,    60,    63,
-      64,    65
+       0,    42,    42,    50,    51,    54,    55,    58,    59,    62,
+      63,    64
 };
 #endif
 
@@ -598,8 +595,8 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "OR", "CLOSURE",
-  "L_BRAC", "R_BRAC", "QUIT", "UNIT", "CONNECT", "';'", "$accept", "lines",
-  "expr", "unit_seq", "unit", YY_NULLPTR
+  "L_BRAC", "R_BRAC", "QUIT", "UNIT", "';'", "$accept", "lines", "Expr",
+  "UnitSeq", "Unit", YY_NULLPTR
 };
 
 static const char *
@@ -609,7 +606,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-4)
+#define YYPACT_NINF (-7)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -623,8 +620,8 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -4,     0,    -4,    -2,    -4,    -4,    -1,    -2,    -3,     7,
-      -2,    -4,    -3,    -4,    -4,    -4
+      -7,     0,    -7,    -2,    -7,    -7,     1,    -2,     9,     8,
+      -2,    -7,     9,    -7,    -7,    -2
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -639,7 +636,7 @@ static const yytype_int8 yydefact[] =
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -4,    -4,     1,    -4,     5
+      -7,    -7,    -1,     2,    -6
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -653,29 +650,29 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       2,    13,    10,     3,     9,     3,     5,     4,     5,    11,
-      10,    15,    12,    14
+       2,    12,     9,     3,    10,     3,     5,     4,     5,    12,
+      11,    10,    15,    13,    14
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     4,     3,     5,     3,     5,     8,     7,     8,    10,
-       3,    10,     7,     6
+       0,     7,     3,     5,     3,     5,     8,     7,     8,    15,
+       9,     3,    10,     4,     6
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    12,     0,     5,     7,     8,    13,    14,    15,    13,
-       3,    10,    15,     4,     6,    13
+       0,    11,     0,     5,     7,     8,    12,    13,    14,    12,
+       3,     9,    14,     4,     6,    13
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    11,    12,    12,    12,    13,    13,    14,    14,    15,
-      15,    15
+       0,    10,    11,    11,    11,    12,    12,    13,    13,    14,
+      14,    14
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -1145,69 +1142,69 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* lines: lines expr ';'  */
-#line 43 "src/regular.y"
+  case 2: /* lines: lines Expr ';'  */
+#line 42 "src/regular.y"
                                                 {
-                                                    // printExprval($2); 
-                                                    buildDFA(*(yyvsp[-1].exprval));
-                                                    printDFA(dfa_generated);
-                                                    simplify();
-                                                    printDFA(dfa_simplified);
+                                                    printNFA((yyvsp[-1].exprval));         // 打印NFA
+                                                    buildDFA(*(yyvsp[-1].exprval));              // 构建DFA
+                                                    printDFA(dfa_generated);    // 打印DFA
+                                                    simplifyDFA();                 // 简化DFA
+                                                    printDFA(dfa_simplified);   // 打印简化后的DFA
                                                     CurrentState = 0;
                                                 }
-#line 1159 "src/regular.cpp"
+#line 1156 "src/regular.cpp"
     break;
 
   case 3: /* lines: lines QUIT  */
-#line 51 "src/regular.y"
+#line 50 "src/regular.y"
                                                 { exit(0); }
-#line 1165 "src/regular.cpp"
+#line 1162 "src/regular.cpp"
     break;
 
-  case 5: /* expr: expr OR expr  */
+  case 5: /* Expr: Expr OR UnitSeq  */
+#line 54 "src/regular.y"
+                                                   { (yyval.exprval) = orExprval((yyvsp[-2].exprval),(yyvsp[0].exprval)); free((yyvsp[-2].exprval)); free((yyvsp[0].exprval)); }
+#line 1168 "src/regular.cpp"
+    break;
+
+  case 6: /* Expr: UnitSeq  */
 #line 55 "src/regular.y"
-                                                { (yyval.exprval) = orExprval((yyvsp[-2].exprval),(yyvsp[0].exprval)); free((yyvsp[-2].exprval)); free((yyvsp[0].exprval)); }
-#line 1171 "src/regular.cpp"
+                                               { (yyval.exprval) = (yyvsp[0].exprval); }
+#line 1174 "src/regular.cpp"
     break;
 
-  case 6: /* expr: unit_seq  */
-#line 56 "src/regular.y"
+  case 7: /* UnitSeq: Unit  */
+#line 58 "src/regular.y"
                                                 { (yyval.exprval) = (yyvsp[0].exprval); }
-#line 1177 "src/regular.cpp"
+#line 1180 "src/regular.cpp"
     break;
 
-  case 7: /* unit_seq: unit  */
+  case 8: /* UnitSeq: UnitSeq Unit  */
 #line 59 "src/regular.y"
-                                                { (yyval.exprval) = (yyvsp[0].exprval); }
-#line 1183 "src/regular.cpp"
+                                               { (yyval.exprval) = connectExprval((yyvsp[-1].exprval),(yyvsp[0].exprval)); free((yyvsp[-1].exprval)); free((yyvsp[0].exprval)); }
+#line 1186 "src/regular.cpp"
     break;
 
-  case 8: /* unit_seq: unit_seq unit  */
-#line 60 "src/regular.y"
-                                                { (yyval.exprval) = connectExprval((yyvsp[-1].exprval),(yyvsp[0].exprval)); free((yyvsp[-1].exprval)); free((yyvsp[0].exprval)); }
-#line 1189 "src/regular.cpp"
-    break;
-
-  case 9: /* unit: UNIT  */
-#line 63 "src/regular.y"
+  case 9: /* Unit: UNIT  */
+#line 62 "src/regular.y"
                                                 { (yyval.exprval) = newExprval((yyvsp[0].chval)); }
-#line 1195 "src/regular.cpp"
+#line 1192 "src/regular.cpp"
     break;
 
-  case 10: /* unit: unit CLOSURE  */
-#line 64 "src/regular.y"
+  case 10: /* Unit: Unit CLOSURE  */
+#line 63 "src/regular.y"
                                                 { (yyval.exprval) = closureExprval((yyvsp[-1].exprval)); free((yyvsp[-1].exprval)); }
-#line 1201 "src/regular.cpp"
+#line 1198 "src/regular.cpp"
     break;
 
-  case 11: /* unit: L_BRAC expr R_BRAC  */
-#line 65 "src/regular.y"
+  case 11: /* Unit: L_BRAC Expr R_BRAC  */
+#line 64 "src/regular.y"
                                                 { (yyval.exprval) = (yyvsp[-1].exprval);}
-#line 1207 "src/regular.cpp"
+#line 1204 "src/regular.cpp"
     break;
 
 
-#line 1211 "src/regular.cpp"
+#line 1208 "src/regular.cpp"
 
       default: break;
     }
@@ -1400,7 +1397,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 69 "src/regular.y"
+#line 68 "src/regular.y"
 
 
 // programs section

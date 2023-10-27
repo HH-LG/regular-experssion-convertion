@@ -72,7 +72,7 @@ void printState(struct state* s)
     printf("}\n");
 }
 
-void printExprval(struct expr* expr)
+void printNFA(struct expr* expr)
 {
     printState(expr->start);
 }

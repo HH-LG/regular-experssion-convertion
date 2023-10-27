@@ -29,40 +29,39 @@ void yyerror(const char* s);
 
 // 结合律与优先级
 %left OR        // 或
-%left CONNECT    //  连接
 %right CLOSURE   // 闭包
 
 // 开始符号与非终结符
-%type<exprval> expr
-%type<exprval> unit
-%type<exprval> unit_seq
+%type<exprval> Expr
+%type<exprval> Unit
+%type<exprval> UnitSeq
 %start lines
 %%
 
 
-lines   :       lines expr ';'                  {
-                                                    // printExprval($2); 
-                                                    buildDFA(*$2);
-                                                    printDFA(dfa_generated);
-                                                    simplify();
-                                                    printDFA(dfa_simplified);
+lines   :       lines Expr ';'                  {
+                                                    printNFA($2);         // 打印NFA
+                                                    buildDFA(*$2);              // 构建DFA
+                                                    printDFA(dfa_generated);    // 打印DFA
+                                                    simplifyDFA();                 // 简化DFA
+                                                    printDFA(dfa_simplified);   // 打印简化后的DFA
                                                     CurrentState = 0;
                                                 }
         |       lines QUIT                      { exit(0); }
         |       // 空串
         ;
 
-expr    :       expr OR expr                    { $$ = orExprval($1,$3); free($1); free($3); }
-        |       unit_seq                        { $$ = $1; }
+Expr    :       Expr OR UnitSeq                    { $$ = orExprval($1,$3); free($1); free($3); }
+        |       UnitSeq                        { $$ = $1; }
         ;
 
-unit_seq:       unit                            { $$ = $1; }
-        |       unit_seq unit                   { $$ = connectExprval($1,$2); free($1); free($2); }
+UnitSeq:        Unit                            { $$ = $1; }
+        |       UnitSeq Unit                   { $$ = connectExprval($1,$2); free($1); free($2); }
         ;
 
-unit    :       UNIT                            { $$ = newExprval($1); }
-        |       unit CLOSURE                    { $$ = closureExprval($1); free($1); }
-        |       L_BRAC expr R_BRAC              { $$ = $2;}
+Unit    :       UNIT                            { $$ = newExprval($1); }
+        |       Unit CLOSURE                    { $$ = closureExprval($1); free($1); }
+        |       L_BRAC Expr R_BRAC              { $$ = $2;}
         ;
 
 

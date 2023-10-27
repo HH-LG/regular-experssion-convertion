@@ -19,7 +19,7 @@ void test01()
     expr* e3 = connectExprval(e1, e2);
     buildDFA(*e3);
     printDFA(dfa_generated);
-    printExprval(e3);
+    printNFA(e3);
 }
 
 int main(int argc, char *argv[])

@@ -7,7 +7,7 @@ using namespace std;
 
 dfa dfa_simplified;
 
-void simplify()
+void simplifyDFA()
 {
     map<int, int> state_to_set_map;
     vector<set<int>> div;
@@ -30,25 +30,25 @@ void simplify()
     // int cnt = 0;
     while(1)
     {
-        printf("current divide:\n");
-        for (int i = 0;i < (int)div.size();i++)
-        {
-            printf("set:%d\n", i);
-            for (int state: div[i])
-                printf("%d\t", state);
-            printf("\n");
-        }
         size_t now_size = div.size();
         for (char ch: charSet)
         {
+            printf("current divide:\n");
+            for (int i = 0;i < (int)div.size();i++)
+            {
+                printf("set:%d\n", i);
+                for (int state: div[i])
+                    printf("%d\t", state);
+                printf("\n");
+            }
             if (ch == epsilon)
                 continue;
             map<int, int> new_state_to_set_map;
             map<int, int> set_to_new_set_map;
-            set<int> next_sets;
             vector<set<int>> new_div;
             for (set<int> part: div)
             {
+                set<int> next_sets;
                 for (int state: part)
                 {
                     int next_state = dfa_generated.graph[state].find(ch) == dfa_generated.graph[state].end() ? 

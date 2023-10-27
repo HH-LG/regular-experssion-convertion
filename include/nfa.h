@@ -17,11 +17,7 @@ extern set<char> charSet;
 // 状态的定义
 #define MAX_NEXT_STATE 100
 #define MAX_STATE_SIZE 100
-struct edge     // 边
-{
-    char ch;
-    struct state* nextState;
-};
+
 struct state    // 状态
 {
     int id;
@@ -52,6 +48,6 @@ expr* orExprval(struct expr* expr1,struct expr* expr2);
 // 打印状态
 void printState(struct state* s);
 // 打印exprval
-void printExprval(struct expr* expr);
+void printNFA(struct expr* expr);
 
 #endif

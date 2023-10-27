@@ -18,6 +18,7 @@ struct dState
         return states < s.states;
     }
 };
+
 struct dfa
 {
    map<int, map<char, int>> graph;
