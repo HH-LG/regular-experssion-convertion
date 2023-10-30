@@ -38,7 +38,7 @@ state* newState();
 // 创建新的表达式
 nfa* newExprval(char ch);
 
-nfa* newExprvalSE(struct state* start,struct state* end);
+nfa* newExprval(struct state* start,struct state* end);
 // 连接两个表达式
 nfa* connectExprval(struct nfa* expr1,struct nfa* expr2);
 // 闭包

@@ -23,10 +23,10 @@ struct nfa* newExprval(char ch)
     struct state* start = newState();
     struct state* end = newState();
     addEdge(start, ch, end);
-    return newExprvalSE(start,end);
+    return newExprval(start,end);
 }
 
-struct nfa* newExprvalSE(struct state* start,struct state* end)
+struct nfa* newExprval(struct state* start,struct state* end)
 {
     struct nfa* expr = (struct nfa*)malloc(sizeof(struct nfa));
     expr->start = start;
@@ -85,7 +85,7 @@ struct nfa* connectExprval(struct nfa* expr1,struct nfa* expr2)
     struct state *interE = expr2->start;
 
     interS->edges = interE->edges;
-    return newExprvalSE(expr1->start,expr2->end);
+    return newExprval(expr1->start,expr2->end);
 }
 
 void addEdge(struct state *s, char ch, struct state *nextState)
@@ -109,7 +109,7 @@ struct nfa* closureExprval(struct nfa* expr)
     addEdge(new_start, epsilon, start);
     addEdge(end, epsilon, new_end);
     addEdge(new_start, epsilon, new_end);
-    return newExprvalSE(new_start, new_end);
+    return newExprval(new_start, new_end);
 }
 
 struct nfa* orExprval(struct nfa* expr1,struct nfa* expr2)
@@ -127,5 +127,5 @@ struct nfa* orExprval(struct nfa* expr1,struct nfa* expr2)
     addEdge(end1, epsilon, new_end);
     addEdge(end2, epsilon, new_end);
 
-    return newExprvalSE(new_start, new_end);
+    return newExprval(new_start, new_end);
 }
