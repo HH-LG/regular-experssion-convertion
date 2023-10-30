@@ -12,11 +12,11 @@ char outfile[256] = "a.dot";
 
 void test01()
 {
-    expr* e1 = newExprval('a');
-    expr* e2 = newExprval('b');
+    nfa* e1 = newExprval('a');
+    nfa* e2 = newExprval('b');
     e1 = closureExprval(e1);
     e2 = closureExprval(e2);
-    expr* e3 = connectExprval(e1, e2);
+    nfa* e3 = connectExprval(e1, e2);
     buildDFA(*e3);
     printDFA(dfa_generated);
     printNFA(e3);

@@ -76,7 +76,7 @@ dState move(dState s, char ch)
 }
 
 
-void buildDFA(struct expr e)
+void buildDFA(struct nfa e)
 {
     //清空已有的dfa
     dfa_generated.graph.clear();

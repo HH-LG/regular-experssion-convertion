@@ -154,7 +154,7 @@ union YYSTYPE
 #line 19 "src/regular.y"
 
     wchar_t chval;
-    struct expr* exprval;
+    struct nfa* exprval;
 
 #line 160 "src/regular.cpp"
 

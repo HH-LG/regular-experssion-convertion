@@ -31,5 +31,5 @@ extern dfa dfa_generated;
 void printDFA(dfa dfa_t);
 
 // 构造dfa
-void buildDFA(struct expr e);
+void buildDFA(struct nfa e);
 #endif

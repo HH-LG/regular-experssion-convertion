@@ -14,7 +14,7 @@ struct state* newState()
     return s;
 }
 
-struct expr* newExprval(char ch)
+struct nfa* newExprval(char ch)
 {
     //添加到字符集
     charSet.insert(ch);
@@ -26,9 +26,9 @@ struct expr* newExprval(char ch)
     return newExprvalSE(start,end);
 }
 
-struct expr* newExprvalSE(struct state* start,struct state* end)
+struct nfa* newExprvalSE(struct state* start,struct state* end)
 {
-    struct expr* expr = (struct expr*)malloc(sizeof(struct expr));
+    struct nfa* expr = (struct nfa*)malloc(sizeof(struct nfa));
     expr->start = start;
     expr->end = end;
     return expr;
@@ -72,12 +72,12 @@ void printState(struct state* s)
     printf("}\n");
 }
 
-void printNFA(struct expr* expr)
+void printNFA(struct nfa* expr)
 {
     printState(expr->start);
 }
 
-struct expr* connectExprval(struct expr* expr1,struct expr* expr2)
+struct nfa* connectExprval(struct nfa* expr1,struct nfa* expr2)
 {
     if (expr2 == NULL)
         return expr1;
@@ -97,7 +97,7 @@ void addEdge(struct state *s, char ch, struct state *nextState)
     s->edges[ch].push_back(nextState);
 }
 
-struct expr* closureExprval(struct expr* expr)
+struct nfa* closureExprval(struct nfa* expr)
 {
     struct state *start = expr->start;
     struct state *end = expr->end;
@@ -112,7 +112,7 @@ struct expr* closureExprval(struct expr* expr)
     return newExprvalSE(new_start, new_end);
 }
 
-struct expr* orExprval(struct expr* expr1,struct expr* expr2)
+struct nfa* orExprval(struct nfa* expr1,struct nfa* expr2)
 {
     struct state *start1 = expr1->start;
     struct state *end1 = expr1->end;

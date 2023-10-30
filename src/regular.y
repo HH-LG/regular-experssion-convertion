@@ -18,7 +18,7 @@ void yyerror(const char* s);
 
 %union{
     wchar_t chval;
-    struct expr* exprval;
+    struct nfa* exprval;
 }
 // 运算符类型
 %token OR

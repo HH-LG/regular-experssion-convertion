@@ -23,7 +23,7 @@ struct state    // 状态
     int id;
     unordered_map<char, vector<state*>> edges;
 };
-struct expr // 表达式的值
+struct nfa // NFA的结构
 {
     struct state* start;
     struct state* end;
@@ -36,18 +36,18 @@ void addEdge(struct state *s, char ch, struct state *nextState);
 // 创建新的状态
 state* newState();
 // 创建新的表达式
-expr* newExprval(char ch);
+nfa* newExprval(char ch);
 
-expr* newExprvalSE(struct state* start,struct state* end);
+nfa* newExprvalSE(struct state* start,struct state* end);
 // 连接两个表达式
-expr* connectExprval(struct expr* expr1,struct expr* expr2);
+nfa* connectExprval(struct nfa* expr1,struct nfa* expr2);
 // 闭包
-expr* closureExprval(struct expr* expr);
+nfa* closureExprval(struct nfa* expr);
 // 或
-expr* orExprval(struct expr* expr1,struct expr* expr2);
+nfa* orExprval(struct nfa* expr1,struct nfa* expr2);
 // 打印状态
 void printState(struct state* s);
 // 打印exprval
-void printNFA(struct expr* expr);
+void printNFA(struct nfa* expr);
 
 #endif
