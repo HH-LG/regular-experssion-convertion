@@ -9,11 +9,11 @@
 
 using namespace std;
 
-struct dState
+struct state_set
 {
     set<state*> states;
 
-    bool operator<(const dState &s) const // 重载<运算符,这里仅仅需要将不同集合区分开，默认字典序足矣
+    bool operator<(const state_set &s) const // 重载<运算符,这里仅仅需要将不同集合区分开，默认字典序足矣
     {
         return states < s.states;
     }

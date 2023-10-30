@@ -9,14 +9,14 @@ using namespace std;
 dfa dfa_generated;
 
 // 判断集合a是否包含集合b
-bool contains(const dState s1, const dState s2) 
+bool contains(const state_set s1, const state_set s2) 
 {
     return includes(s1.states.begin(), s1.states.end(), s2.states.begin(), s2.states.end());
 }
 
-dState e_closure(dState s)
+state_set e_closure(state_set s)
 {
-    dState T;
+    state_set T;
     stack<state*> stackStates;
     unordered_map<state*, bool> map;
     for (state* s0: s.states)
@@ -28,7 +28,7 @@ dState e_closure(dState s)
     {
         state* curState = stackStates.top();
         stackStates.pop();
-        map.emplace(curState, true); 
+        map[curState]=true; 
         T.states.insert(curState);
         for (auto edge: curState->edges)
         {
@@ -44,9 +44,9 @@ dState e_closure(dState s)
     
     return T;
 }
-dState move(dState s, char ch)
+state_set move(state_set s, char ch)
 {
-    dState T;
+    state_set T;
     stack<state*> stackStates;
     unordered_map<state*, bool> map;
     for (state* s0: s.states)
@@ -66,7 +66,7 @@ dState move(dState s, char ch)
                 if (map.find(nextState) == map.end() && m_ch == ch)
                 {
                     stackStates.push(nextState); 
-                    map.emplace(nextState, true); 
+                    map[nextState]=true; 
                     T.states.insert(nextState);
                 }
         }
@@ -89,9 +89,9 @@ void buildDFA(struct nfa e)
     state* end = e.end;
     int dfa_state_cnt = 0;
     
-    dState s;
+    state_set s;
     s.states.insert(start);
-    dState s0 = e_closure(s);
+    state_set s0 = e_closure(s);
     printf("e_closure(s0): ");
     for (state *s0: s0.states)
     {
@@ -103,9 +103,9 @@ void buildDFA(struct nfa e)
         printf("finish state: %d\n", dfa_state_cnt);
         dfa_generated.finish_state.insert(dfa_state_cnt);
     }
-    stack<dState> stateStack;
-    set<dState> dfaStates;
-    map<dState, int> state_to_index;
+    stack<state_set> stateStack;
+    set<state_set> dfaStates;
+    map<state_set, int> state_to_index;
 
     stateStack.push(s0);
     //对于dfa的计算
@@ -114,14 +114,14 @@ void buildDFA(struct nfa e)
 
     while(!stateStack.empty())
     {
-        dState curDState = stateStack.top();
+        state_set curDState = stateStack.top();
         // printf("curDState: %d\n", state_to_index[curDState]);
         stateStack.pop();
         for (char ch: charSet)
         {
             if (ch == epsilon)
                 continue;
-            dState nextDState = e_closure(move(curDState, ch));
+            state_set nextDState = e_closure(move(curDState, ch));
             printf("e_closure(move(%d, %c)): ", state_to_index[curDState], ch);
             for (state *s0: nextDState.states)
             {
