@@ -28,7 +28,7 @@ void simplifyDFA()
     div.push_back(dfa_generated.finish_state);
 
     // int cnt = 0;
-    while(1)
+    while(true)
     {
         size_t now_size = div.size();
         for (char ch: charSet)

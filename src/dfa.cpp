@@ -8,12 +8,6 @@ using namespace std;
 
 dfa dfa_generated;
 
-// 判断集合a是否包含集合b
-bool contains(const state_set s1, const state_set s2) 
-{
-    return includes(s1.states.begin(), s1.states.end(), s2.states.begin(), s2.states.end());
-}
-
 state_set e_closure(state_set s)
 {
     state_set T;
