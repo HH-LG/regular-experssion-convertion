@@ -1,8 +1,11 @@
 SRC_PATH ?= src
 INC_PATH += include
 BUILD_PATH ?= build
+TEST_PATH ?= test
 OBJ_PATH ?= $(BUILD_PATH)/obj
 BINARY = $(BUILD_PATH)/nfa_to_dfa
+TEST = $(TEST_PATH)/regex.txt
+
 
 INC = $(addprefix -I, $(INC_PATH))
 SRC = $(shell find $(SRC_PATH)  -name "*.cpp")
@@ -11,7 +14,7 @@ CFLAGS = -O0 -g -Wall -Werror $(INC)  # -O2 优化等级2 -g 生成调试信息 
 YYAC = $(SRC_PATH)/regular.y
 YYACER = $(addsuffix .cpp, $(basename $(YYAC)))
 
-.phony: all app gdb run clean
+.phony: all app gdb run test clean
 
 all: app
 
@@ -33,6 +36,8 @@ gdb: $(BINARY)
 run:app
 	$(BINARY) -o out.dot
 
+test:app
+	$(BINARY) -t $(TEST)
 clean:
 	rm -rf $(BUILD_PATH) 
 

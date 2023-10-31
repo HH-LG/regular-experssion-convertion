@@ -1449,7 +1449,6 @@ int yylex()
 
 int regularPrase(void)
 {
-    yyin=stdin;
     do{
         yyparse();
     }while(!feof(yyin));

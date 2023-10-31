@@ -1,13 +1,16 @@
 #include "nfa.h"
 #include "dfa.h"
+#include "test.h"
 #include <iostream>
 #include <unistd.h>
 #include <string.h>
 
+extern FILE *yyin;
 extern int regularPrase();
 
 using namespace std;
 
+char testfile[256] = "./test/regex.txt";
 char outfile[256] = "a.dot";
 
 void test01()
@@ -25,35 +28,63 @@ void test01()
 int main(int argc, char *argv[])
 {
     int opt;
+    int ot_flag = 0;
     while ((opt = getopt(argc, argv, "to:")) != -1)
     {
         switch (opt)
         {
+        case 't':
+            if(ot_flag == 0)
+            {
+                ot_flag = 1;
+            }
+            else
+            {
+                fprintf(stderr, "Usage: %s -o outfile, %s -t testfile\n", argv[0], argv[0]);
+                exit(EXIT_FAILURE);
+            }
+            break;
         case 'o':
-            strcpy(outfile, optarg);
+            if (ot_flag == 0)
+            {
+                strcpy(outfile, optarg);
+                ot_flag = 2;
+            }
+            else
+            {
+                fprintf(stderr, "Usage: %s -o outfile, %s -t testfile\n", argv[0], argv[0]);
+                exit(EXIT_FAILURE);
+            }
             break;
         default:
-            fprintf(stderr, "Usage: %s [-o outfile]\n", argv[0]);
+            fprintf(stderr, "Usage: %s -o outfile, %s -t testfile\n", argv[0], argv[0]);
             exit(EXIT_FAILURE);
             break;
         }
     }
 
     // 测试一下 argc 与 argv
-    cout << argc <<endl;
-    for (int i=0; i < argc; i++)
+    //cout << argc <<endl;
+    //for (int i=0; i < argc; i++)
+    //{
+    //    cout << argv[i] << endl;
+    //}
+    cout << "here" << endl;
+    if (ot_flag == 1)
     {
-        cout << argv[i] << endl;
+        test_dfa_simplified(testfile);
+    }
+    else if (ot_flag == 2)
+    {
+        yyin = stdin;
+        FILE *fp = freopen(outfile, "w", stdout);
+        if (fp == NULL)
+        {
+            fprintf(stderr, "%s: fail to open output file\n", outfile);
+            exit(EXIT_FAILURE);
+        }
+        regularPrase();
+
     }
 
-    FILE *fp = freopen(outfile, "w", stdout);  //重定向
-    
-    if (fp == NULL)
-    {
-        printf("error opening file\n");
-        exit(-1);
-    }
-    
-    regularPrase();
-    fclose(fp);
 }
