@@ -98,24 +98,24 @@ void buildDFA(struct nfa e)
     }
     stack<state_set> stateStack;
     set<state_set> dfaStates;
-    map<state_set, int> state_to_index;
+    map<state_set, int> state_to_id;
 
     stateStack.push(s0);
     //对于dfa的计算
     dfaStates.insert(s0);
-    state_to_index[s0] = dfa_state_cnt++;
+    state_to_id[s0] = dfa_state_cnt++;
 
     while(!stateStack.empty())
     {
         state_set curDState = stateStack.top();
-        // printf("curDState: %d\n", state_to_index[curDState]);
+        // printf("curDState: %d\n", state_to_id[curDState]);
         stateStack.pop();
         for (char ch: charSet)
         {
             if (ch == epsilon)
                 continue;
             state_set nextDState = e_closure(move(curDState, ch));
-            printf("e_closure(move(%d, %c)): ", state_to_index[curDState], ch);
+            printf("e_closure(move(%d, %c)): ", state_to_id[curDState], ch);
             for (state *s0: nextDState.states)
             {
                 printf("%d ", s0->id);
@@ -123,7 +123,7 @@ void buildDFA(struct nfa e)
             printf("\n");
             if (nextDState.states.empty())
             {
-                continue;;
+                continue;
             }
             // 判断是否已经包含
             bool isContained = dfaStates.find(nextDState) != dfaStates.end();
@@ -139,9 +139,9 @@ void buildDFA(struct nfa e)
                     // printf("finish state: %d\n", dfa_state_cnt);
                     dfa_generated.finish_state.insert(dfa_state_cnt);
                 }
-                state_to_index[nextDState] = dfa_state_cnt++;
+                state_to_id[nextDState] = dfa_state_cnt++;
             }
-            dfa_generated.graph[state_to_index[curDState]][ch] = state_to_index[nextDState]; 
+            dfa_generated.graph[state_to_id[curDState]][ch] = state_to_id[nextDState]; 
         }
     }
     

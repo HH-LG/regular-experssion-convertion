@@ -1145,9 +1145,9 @@ yyreduce:
   case 2: /* lines: lines Expr ';'  */
 #line 42 "src/regular.y"
                                                 {
-                                                    printNFA((yyvsp[-1].exprval));         // 打印NFA
+                                                    //printNFA($2);         // 打印NFA
                                                     buildDFA(*(yyvsp[-1].exprval));              // 构建DFA
-                                                    printDFA(dfa_generated);    // 打印DFA
+                                                    //printDFA(dfa_generated);    // 打印DFA
                                                     simplifyDFA();                 // 简化DFA
                                                     printDFA(dfa_simplified);   // 打印简化后的DFA
                                                     CurrentState = 0;
