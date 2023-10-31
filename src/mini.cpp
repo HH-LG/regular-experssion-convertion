@@ -9,25 +9,23 @@ dfa dfa_simplified;
 
 void simplifyDFA(dfa dfa_gen)
 {
-    map<int, int> state_to_set_map;
-    vector<set<int>> div;
-    set<int> normal_state;
-    for (auto state: dfa_gen.graph)
+    // 生成划分
+    map<int, int> state_to_set_map; // 当前状态到划分集合的映射
+    vector<set<int>> div;           // 当前划分
+    set<int> normal_state;          // 非终态
+    for (auto state: dfa_gen.graph)// 遍历所有状态
     {
         if (dfa_gen.finish_state.find(state.first) == dfa_gen.finish_state.end())
         {
-            state_to_set_map[state.first] = 0;
+            state_to_set_map[state.first] = 0;  // 非终态作为第0个划分
             normal_state.insert(state.first);
         }
         else
-        {
-            state_to_set_map[state.first] = 1;
-        }
+            state_to_set_map[state.first] = 1;  // 终态作为第1个划分
     }
-    div.push_back(normal_state);
-    div.push_back(dfa_gen.finish_state);
+    div.push_back(normal_state);    // 加入非终态
+    div.push_back(dfa_gen.finish_state);    // 加入终态
 
-    // int cnt = 0;
     while(true)
     {
         size_t now_size = div.size();
@@ -72,9 +70,6 @@ void simplifyDFA(dfa dfa_gen)
         }
         if (now_size == div.size())  // 一轮还未更新，退出
             break;
-        //cnt++;
-        //if (cnt == 10)
-        //    break;
     }
 
     // 生成简化的dfa
