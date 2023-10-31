@@ -5,7 +5,7 @@ TEST_PATH ?= test
 OBJ_PATH ?= $(BUILD_PATH)/obj
 BINARY = $(BUILD_PATH)/nfa_to_dfa
 TEST = $(TEST_PATH)/regex.txt
-
+GEN = $(SRC_PATH)/example_gen.py
 
 INC = $(addprefix -I, $(INC_PATH))
 SRC = $(shell find $(SRC_PATH)  -name "*.cpp")
@@ -14,7 +14,7 @@ CFLAGS = -O0 -g -Wall -Werror $(INC)  # -O2 优化等级2 -g 生成调试信息 
 YYAC = $(SRC_PATH)/regular.y
 YYACER = $(addsuffix .cpp, $(basename $(YYAC)))
 
-.phony: all app gdb run test clean
+.phony: all app gdb run test gen clean
 
 all: app
 
@@ -37,7 +37,11 @@ run:app
 	$(BINARY) -o out.dot
 
 test:app
-	$(BINARY) -t $(TEST)
+	$(BINARY) -t 
+
+gen:
+	python3 $(GEN) 
+
 clean:
 	rm -rf $(BUILD_PATH) 
 

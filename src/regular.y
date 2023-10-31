@@ -35,19 +35,20 @@ void yyerror(const char* s);
 %type<exprval> Expr
 %type<exprval> Unit
 %type<exprval> UnitSeq
-%start lines
+%start line
 %%
 
 
-lines   :       lines Expr ';'                  {
-                                                    //printNFA($2);         // 打印NFA
-                                                    buildDFA(*$2);              // 构建DFA
+line   :       Expr ';'                         {
+                                                    //printNFA($1);         // 打印NFA
+                                                    buildDFA(*$1);              // 构建DFA
                                                     //printDFA(dfa_generated);    // 打印DFA
                                                     simplifyDFA(dfa_generated);                 // 简化DFA
                                                     printDFA(dfa_simplified);   // 打印简化后的DFA
                                                     CurrentState = 0;
+                                                    return 0;
                                                 }
-        |       lines QUIT                      { exit(0); }
+        |       QUIT                            { exit(0); }
         |       // 空串
         ;
 
@@ -73,7 +74,7 @@ int yylex()
 {
     int t;
     while(1){
-        t=getchar();
+        t=getc(yyin);
         if (t==' '||t=='\t'||t=='\n')
         {
             // do noting
@@ -104,6 +105,13 @@ int yylex()
         }
         else if (t == 'q')
         {
+            t = getc(yyin);
+            if (t != '\n')
+            {
+                ungetc(t, yyin);
+                yylval.chval = 'q';
+                return UNIT;
+            }
             return QUIT;
         }
         else{

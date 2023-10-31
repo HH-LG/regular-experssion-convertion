@@ -9,6 +9,10 @@ dfa dfa_simplified;
 
 void simplifyDFA(dfa dfa_gen)
 {
+    // 清空生成的dfa
+    dfa_simplified.graph.clear();
+    dfa_simplified.finish_state.clear();
+
     // 生成划分
     map<int, int> state_to_set_map; // 当前状态到划分集合的映射
     vector<set<int>> div;           // 当前划分
@@ -31,14 +35,14 @@ void simplifyDFA(dfa dfa_gen)
         size_t now_size = div.size();
         for (char ch: charSet)
         {
-            printf("current divide:\n");
-            for (int i = 0;i < (int)div.size();i++)
-            {
-                printf("set:%d\n", i);
-                for (int state: div[i])
-                    printf("%d\t", state);
-                printf("\n");
-            }
+            //printf("current divide:\n");
+            //for (int i = 0;i < (int)div.size();i++)
+            //{
+                //printf("set:%d\n", i);
+                //for (int state: div[i])
+                    //printf("%d\t", state);
+                //printf("\n");
+            //}
             if (ch == epsilon)
                 continue;
             map<int, int> new_state_to_set_map;
@@ -53,10 +57,10 @@ void simplifyDFA(dfa dfa_gen)
                                     -1 : dfa_gen.graph[state][ch];
                     int next_set = state_to_set_map.find(next_state) == state_to_set_map.end() ? 
                                     -1 : state_to_set_map[next_state];
-                    printf("state:%d -> next_state:%d, next_set:%d, ch:%c\n", state, next_state, next_set, ch);
+                    // printf("state:%d -> next_state:%d, next_set:%d, ch:%c\n", state, next_state, next_set, ch);
                     if (next_sets.find(next_set) == next_sets.end())
                     {
-                        printf("new set:%ld\n", new_div.size());
+                        // printf("new set:%ld\n", new_div.size());
                         next_sets.insert(next_set);
                         set_to_new_set_map[next_set] = new_div.size();  // 旧集合到新集合的映射,对应到新的div的新划分中
                         new_div.push_back(set<int>());  //加入一个空的新集合

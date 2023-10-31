@@ -2,20 +2,38 @@
 #include <fstream>
 #include "test.h"
 
+extern int regularPrase();
+extern int yyparse();
+extern FILE *yyin;
 
 using namespace std;
 
 void test_dfa_simplified(char* testfile)
 {
-    ifstream regex_file(testfile);
-
-    char buffer[256];
-    cout << "inFile.txt" << "--- all file is as follows:---" << endl;
-    while (!regex_file.eof())
+    yyin = fopen(testfile, "r");
+    if (yyin == NULL)
     {
-        regex_file.getline(buffer, 256, '\n'); //getline(char *,int,char) 表示该行字符达到256个或遇到换行就结束
-        cout << buffer << endl;
+        fprintf(stderr, "%s: fail to open input file\n", testfile);
+        exit(EXIT_FAILURE);
+    }       
+    FILE *fp = freopen("./log/test.dot", "w", stdout);
+    if (fp == NULL)
+    {
+        fprintf(stderr, "fail to open output file\n");
+        exit(EXIT_FAILURE);
     }
+    int cnt = 0;
+    do
+    {
+        yyparse();
 
-    regex_file.close();
+        cnt ++;
+        cout << "cnt:" << cnt << endl;
+    } while (!feof(yyin));
+    
+}
+
+bool test_regex(int id)
+{
+
 }

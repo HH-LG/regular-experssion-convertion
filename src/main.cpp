@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                fprintf(stderr, "Usage: %s -o outfile, %s -t testfile\n", argv[0], argv[0]);
+                fprintf(stderr, "Usage: %s -o outfile, %s -t\n", argv[0], argv[0]);
                 exit(EXIT_FAILURE);
             }
             break;
@@ -52,12 +52,12 @@ int main(int argc, char *argv[])
             }
             else
             {
-                fprintf(stderr, "Usage: %s -o outfile, %s -t testfile\n", argv[0], argv[0]);
+                fprintf(stderr, "Usage: %s -o outfile, %s -t\n", argv[0], argv[0]);
                 exit(EXIT_FAILURE);
             }
             break;
         default:
-            fprintf(stderr, "Usage: %s -o outfile, %s -t testfile\n", argv[0], argv[0]);
+            fprintf(stderr, "Usage: %s -o outfile, %s -t\n", argv[0], argv[0]);
             exit(EXIT_FAILURE);
             break;
         }

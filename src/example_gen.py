@@ -34,11 +34,13 @@ def generate_example(s, f):
     for s in strings:
         f.write(s + "\n")
 
-with open("../test/regex.txt", "w") as f1:
+with open("./test/regex.txt", "w") as f1:
     for i in range(100):
         regex = generate_regex()
-        f1.write(regex + "\n")
+        f1.write(regex + ";\n")
 
-        path = "../test/example{}.txt".format(i)
+        
+        path = "./test/eg/example{}.txt".format(i)
         with open(path, "w") as f2:
             generate_example(regex, f2)
+    f1.write('q\n')
