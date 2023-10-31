@@ -85,15 +85,13 @@ void buildDFA(struct nfa e)
     state_set s;
     s.states.insert(start);
     state_set s0 = e_closure(s);
-    printf("e_closure(s0): ");
-    for (state *s0: s0.states)
-    {
-        printf("%d ", s0->id);
-    }
-    printf("\n");
+    //printf("e_closure(s0): ");
+    //for (state *s0: s0.states)
+    //    printf("%d ", s0->id);
+    //printf("\n");
     if (s0.states.find(end) != s0.states.end())
     {   
-        printf("finish state: %d\n", dfa_state_cnt);
+        // printf("finish state: %d\n", dfa_state_cnt);
         dfa_generated.finish_state.insert(dfa_state_cnt);
     }
     stack<state_set> stateStack;
@@ -115,32 +113,27 @@ void buildDFA(struct nfa e)
             if (ch == epsilon)
                 continue;
             state_set nextDState = e_closure(move(curDState, ch));
-            printf("e_closure(move(%d, %c)): ", state_to_id[curDState], ch);
-            for (state *s0: nextDState.states)
-            {
-                printf("%d ", s0->id);
-            }
-            printf("\n");
+            //printf("e_closure(move(%d, %c)): ", state_to_id[curDState], ch);
+            //for (state *s0: nextDState.states)
+            //    printf("%d ", s0->id);
+            //printf("\n");
             if (nextDState.states.empty())
-            {
                 continue;
-            }
             // 判断是否已经包含
-            bool isContained = dfaStates.find(nextDState) != dfaStates.end();
-            if (!isContained)
+            if (dfaStates.find(nextDState) == dfaStates.end())
             {
-                printf("state: %d\n", dfa_state_cnt);
                 // 加入新的状态
                 stateStack.push(nextDState);
                 //对于dfa的计算
                 dfaStates.insert(nextDState);
-                if (nextDState.states.find(end) != nextDState.states.end())
-                {   
-                    // printf("finish state: %d\n", dfa_state_cnt);
+                // 加入接受态
+                if (nextDState.states.find(end) != nextDState.states.end()) 
                     dfa_generated.finish_state.insert(dfa_state_cnt);
-                }
+
+                // 分配新的id
                 state_to_id[nextDState] = dfa_state_cnt++;
             }
+            // 连接上边
             dfa_generated.graph[state_to_id[curDState]][ch] = state_to_id[nextDState]; 
         }
     }

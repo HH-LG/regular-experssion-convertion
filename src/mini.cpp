@@ -7,14 +7,14 @@ using namespace std;
 
 dfa dfa_simplified;
 
-void simplifyDFA()
+void simplifyDFA(dfa dfa_gen)
 {
     map<int, int> state_to_set_map;
     vector<set<int>> div;
     set<int> normal_state;
-    for (auto state: dfa_generated.graph)
+    for (auto state: dfa_gen.graph)
     {
-        if (dfa_generated.finish_state.find(state.first) == dfa_generated.finish_state.end())
+        if (dfa_gen.finish_state.find(state.first) == dfa_gen.finish_state.end())
         {
             state_to_set_map[state.first] = 0;
             normal_state.insert(state.first);
@@ -25,7 +25,7 @@ void simplifyDFA()
         }
     }
     div.push_back(normal_state);
-    div.push_back(dfa_generated.finish_state);
+    div.push_back(dfa_gen.finish_state);
 
     // int cnt = 0;
     while(true)
@@ -51,8 +51,8 @@ void simplifyDFA()
                 set<int> next_sets;
                 for (int state: part)
                 {
-                    int next_state = dfa_generated.graph[state].find(ch) == dfa_generated.graph[state].end() ? 
-                                    -1 : dfa_generated.graph[state][ch];
+                    int next_state = dfa_gen.graph[state].find(ch) == dfa_gen.graph[state].end() ? 
+                                    -1 : dfa_gen.graph[state][ch];
                     int next_set = state_to_set_map.find(next_state) == state_to_set_map.end() ? 
                                     -1 : state_to_set_map[next_state];
                     printf("state:%d -> next_state:%d, next_set:%d, ch:%c\n", state, next_state, next_set, ch);
@@ -85,8 +85,8 @@ void simplifyDFA()
         {
             if (ch == epsilon)
                 continue;
-            int next_state = dfa_generated.graph[*s.begin()].find(ch) == dfa_generated.graph[*s.begin()].end() ? 
-                            -1 : dfa_generated.graph[*s.begin()][ch];
+            int next_state = dfa_gen.graph[*s.begin()].find(ch) == dfa_gen.graph[*s.begin()].end() ? 
+                            -1 : dfa_gen.graph[*s.begin()][ch];
             if (next_state == -1)
                 continue;
             dfa_simplified.graph[state_to_set_map[*s.begin()]][ch] = state_to_set_map[next_state];
@@ -94,7 +94,7 @@ void simplifyDFA()
     }
 
     // 生成终态
-    for (int s: dfa_generated.finish_state)
+    for (int s: dfa_gen.finish_state)
     {
         dfa_simplified.finish_state.insert(state_to_set_map[s]);
     }

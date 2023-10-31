@@ -5,5 +5,5 @@
 
 extern dfa dfa_simplified;
 
-void simplifyDFA();
+void simplifyDFA(dfa dfa_gen);
 #endif

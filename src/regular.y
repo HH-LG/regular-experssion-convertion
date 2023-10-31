@@ -43,7 +43,7 @@ lines   :       lines Expr ';'                  {
                                                     //printNFA($2);         // 打印NFA
                                                     buildDFA(*$2);              // 构建DFA
                                                     //printDFA(dfa_generated);    // 打印DFA
-                                                    simplifyDFA();                 // 简化DFA
+                                                    simplifyDFA(dfa_generated);                 // 简化DFA
                                                     printDFA(dfa_simplified);   // 打印简化后的DFA
                                                     CurrentState = 0;
                                                 }
