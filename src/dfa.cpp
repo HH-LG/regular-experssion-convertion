@@ -18,7 +18,6 @@ state_set e_closure(state_set s)
 {
     state_set T;
     stack<state*> stackStates;
-    unordered_map<state*, bool> map;
     for (state* s0: s.states)
     {
         stackStates.push(s0);
@@ -28,17 +27,17 @@ state_set e_closure(state_set s)
     {
         state* curState = stackStates.top();
         stackStates.pop();
-        map[curState]=true; 
         T.states.insert(curState);
-        for (auto edge: curState->edges)
+
+        if (curState->edges.find(epsilon) == curState->edges.end())
+            continue;
+        auto nextStates = curState->edges[epsilon];
+        for (auto nextState: nextStates)
         {
-            vector<state*> nextStates = edge.second;
-            char m_ch = edge.first;
-            for (auto nextState: nextStates)
-                if (map.find(nextState) == map.end() && m_ch == epsilon)
-                {
-                    stackStates.push(nextState); 
-                }
+            if (T.states.find(nextState) == T.states.end())
+            {
+                stackStates.push(nextState); 
+            }
         }
     }
     
@@ -46,29 +45,29 @@ state_set e_closure(state_set s)
 }
 state_set move(state_set s, char ch)
 {
-    state_set T;
-    stack<state*> stackStates;
-    unordered_map<state*, bool> map;
-    for (state* s0: s.states)
+    state_set T;                        // 返回的状态集合
+    stack<state*> stackStates;          // state的栈
+    for (state* s0: s.states)   // 将输入中的每个状态入栈
     {
         stackStates.push(s0);
     }
 
-    while(!stackStates.empty())
+    while(!stackStates.empty()) // 栈不空
     {
-        state* curState = stackStates.top();
+        state* curState = stackStates.top(); // 取出栈顶
         stackStates.pop();
-        for (auto edge: curState->edges)
+
+        if (curState->edges.find(ch) == curState->edges.end()) // 没找到合适的边
+            continue;
+        auto nextStates = curState->edges[ch];
+        for (auto nextState: nextStates)// 对该集合所有状态
         {
-            vector<state*> nextStates = edge.second;
-            char m_ch = edge.first;
-            for (auto nextState: nextStates)
-                if (map.find(nextState) == map.end() && m_ch == ch)
-                {
-                    stackStates.push(nextState); 
-                    map[nextState]=true; 
-                    T.states.insert(nextState);
-                }
+            if ( T.states.find(nextState) == T.states.end()) // 如果未找到该状态
+            {
+                // 加入状态集合中
+                stackStates.push(nextState); 
+                T.states.insert(nextState);
+            }
         }
     }
 
