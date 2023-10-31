@@ -1,5 +1,6 @@
 import exrex
 import random
+from itertools import islice
 
 def generate_regex():
     regex = ""
@@ -26,10 +27,18 @@ def generate_regex():
             regex += "*"
     return regex
 
-def generate_example(s):
-    for i in range(100):
-        print(exrex.getone(s))
+def generate_example(s, f):
+    gen = exrex.generate(s)
+    strings = list(islice(gen, 100))
+    # random.shuffle(strings)
+    for s in strings:
+        f.write(s + "\n")
 
-regex = generate_regex()
-print(regex)
-generate_example(regex)
+with open("../test/regex.txt", "w") as f1:
+    for i in range(100):
+        regex = generate_regex()
+        f1.write(regex + "\n")
+
+        path = "../test/example{}.txt".format(i)
+        with open(path, "w") as f2:
+            generate_example(regex, f2)
