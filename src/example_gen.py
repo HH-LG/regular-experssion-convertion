@@ -35,7 +35,7 @@ def generate_example(s, f):
         f.write(s + "\n")
 
 with open("./test/regex.txt", "w") as f1:
-    for i in range(100):
+    for i in range(1000):
         regex = generate_regex()
         f1.write(regex + ";\n")
 

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <unistd.h>
+#include <iomanip>
 #include <string>
 #include <cstring>
 #include "test.h"
@@ -49,24 +51,27 @@ void test_dfa_simplified(char* testfile)
         fprintf(stderr, "%s: fail to open input file\n", testfile);
         exit(EXIT_FAILURE);
     }       
-    FILE *fp = freopen("./log/test.dot", "w", stdout);
-    if (fp == NULL)
-    {
-        fprintf(stderr, "fail to open output file\n");
-        exit(EXIT_FAILURE);
-    }
+    //FILE *fp = freopen("./log/test.dot", "w", stdout);
+    //if (fp == NULL)
+    //{
+        //fprintf(stderr, "fail to open output file\n");
+        //exit(EXIT_FAILURE);
+    //}
     int cnt = 0;
     do
     {
-        yyparse();
+        if(yyparse()) // 检测到q就跳出
+            break;
         if (!test_regex(cnt))
         {
             cout << "test " << cnt << " failed" << endl;
             exit(EXIT_FAILURE);
         }
-        cout << "cnt:" << cnt << endl;
         cnt ++;
+        cout << "\rTesting for generated dfa: " << std::fixed << std::setprecision(1)<< (float)cnt/Test_num*100.0 << "%" << flush;
     } while (!feof(yyin));
-    
+    cout << endl;
+    usleep(500000); // 暂停500毫秒
+    cout << "Testing complete, all tests passed!!!" << endl;
 }
 
