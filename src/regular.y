@@ -40,9 +40,9 @@ void yyerror(const char* s);
 
 
 line   :       Expr ';'                         {
-                                                    printNFA($1);         // 打印NFA
+                                                    //printNFA($1);         // 打印NFA
                                                     buildDFA(*$1);              // 构建DFA
-                                                    printDFA(dfa_generated);    // 打印DFA
+                                                    //printDFA(dfa_generated);    // 打印DFA
                                                     simplifyDFA(dfa_generated);                 // 简化DFA
                                                     printDFA(dfa_simplified);   // 打印简化后的DFA
                                                     CurrentState = 0;

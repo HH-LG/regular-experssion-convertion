@@ -1,49 +1,19 @@
+
 digraph G {
-	0 -> 13 [label="l"];
-	0 -> 6 [label="t"];
-	1 -> 13 [label="l"];
-	2 -> 13 [label="u"];
-	3 -> 6 [label="t"];
-	4 -> 17 [label="p"];
-	5 -> 6 [label="j"];
-	6 -> 8 [label="j"];
-	7 -> 14 [label="g"];
-	7 -> 7 [label="h"];
-	7 -> 14 [label="w"];
-	8 -> 17 [label="e"];
-	8 -> 8 [label="z"];
-	9 -> 14 [label="e"];
-	10 -> 1 [label="d"];
-	10 -> 11 [label="i"];
-	10 -> 6 [label="j"];
-	10 -> 2 [label="l"];
-	10 -> 17 [label="v"];
-	11 -> 1 [label="d"];
-	11 -> 11 [label="i"];
-	11 -> 2 [label="l"];
-	11 -> 17 [label="v"];
-	12 -> 3 [label="d"];
-	12 -> 5 [label="i"];
-	12 -> 12 [label="w"];
-	13 -> 1 [label="d"];
-	13 -> 2 [label="l"];
-	13 -> 17 [label="v"];
-	14 -> 14 [label="d"];
-	14 -> 9 [label="l"];
-	14 -> 17 [label="x"];
-	15 -> 0 [label="d"];
-	15 -> 7 [label="g"];
-	15 -> 10 [label="i"];
-	15 -> 2 [label="l"];
-	15 -> 4 [label="m"];
-	15 -> 16 [label="q"];
-	15 -> 17 [label="v"];
-	15 -> 12 [label="w"];
-	16 -> 16 [label="q"];
-	15 [shape=doublecircle];
-	16 [shape=doublecircle];
-	17 [shape=doublecircle];
+	0 -> 2 [label="v"];
+	0 -> 4 [label="w"];
+	1 -> 5 [label="s"];
+	2 -> 4 [label="j"];
+	3 -> 4 [label="h"];
+	4 -> 6 [label="f"];
+	4 -> 3 [label="g"];
+	5 -> 8 [label="c"];
+	5 -> 8 [label="t"];
+	6 -> 7 [label="b"];
+	7 -> 1 [label="b"];
+	7 -> 5 [label="s"];
+	8 [shape=doublecircle];
 }
 cur_state: 0
-test 3, example 0 failed
-test 3 failed
+test 19, example 80 failed
+test 19 failed

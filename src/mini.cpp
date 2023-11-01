@@ -76,6 +76,17 @@ void simplifyDFA(dfa dfa_gen)
             break;
     }
 
+    // 生成初始状态,emmmmm实际上是交换一下，debug出来的bug
+    int set_id = state_to_set_map[0];
+    if (set_id != 0)
+    {
+        swap(div[0], div[set_id]);
+        for (auto s: div[0])
+            state_to_set_map[s] = 0;
+        for (auto s: div[set_id])
+            state_to_set_map[s] = set_id;
+    }
+
     // 生成简化的dfa
     // 生成边 
     for (set<int> s: div)
