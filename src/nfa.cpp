@@ -3,6 +3,7 @@
 #include <iostream>
 #include <set>
 #include <vector>
+#include <locale>
 using namespace std;
 
 set<char> charSet;
@@ -36,6 +37,8 @@ struct nfa* newExprval(struct state* start,struct state* end)
 
 void printState(struct state* s)
 {
+    setlocale(LC_ALL, "");  // 设置全局区域设置
+
     bool stateUsed[MAX_STATE_SIZE] = {false};
     struct state* stateStack[MAX_STATE_SIZE/2];
     int size = 0;
@@ -46,15 +49,19 @@ void printState(struct state* s)
     while(size)
     {
         struct state* curState = stateStack[--size];
-        
         stateUsed[curState->id] = true;
 
         for (auto edge: curState->edges)
         {
             char ch = edge.first;
+            wchar_t wch;
+            mbtowc(&wch, &ch, MB_CUR_MAX);
+            if (ch == epsilon)
+                wch = L'\u03b5';
+
             vector<state*> nextStates = edge.second;
             for (auto nextState: nextStates)
-                printf("\t%d -> %d [label=\"%c\"];\n", curState->id, nextState->id, ch);
+                printf("\t%d -> %d [label=\"%lc\"];\n", curState->id, nextState->id, wch);
         }
 
         for (auto edge: curState->edges)

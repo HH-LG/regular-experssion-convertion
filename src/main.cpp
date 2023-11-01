@@ -25,10 +25,11 @@ void test01()
     printNFA(e3);
 }
 
+int ot_flag = 0;
+
 int main(int argc, char *argv[])
 {
     int opt;
-    int ot_flag = 0;
     while ((opt = getopt(argc, argv, "to:")) != -1)
     {
         switch (opt)

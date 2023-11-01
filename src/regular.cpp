@@ -78,6 +78,8 @@
 #include "dfa.h"
 #include "mini.h"
 
+extern int ot_flag;
+
 int regularPrase();
 int yylex();
 extern int yyparse();
@@ -85,7 +87,7 @@ FILE* yyin;
 void yyerror(const char* s);
 
 
-#line 89 "src/regular.cpp"
+#line 91 "src/regular.cpp"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -151,12 +153,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 19 "src/regular.y"
+#line 21 "src/regular.y"
 
     wchar_t chval;
     struct nfa* exprval;
 
-#line 160 "src/regular.cpp"
+#line 162 "src/regular.cpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -577,8 +579,8 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    42,    42,    51,    52,    55,    56,    59,    60,    63,
-      64,    65
+       0,    44,    44,    53,    58,    61,    62,    65,    66,    69,
+      70,    71
 };
 #endif
 
@@ -1143,69 +1145,73 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* line: Expr ';'  */
-#line 42 "src/regular.y"
+#line 44 "src/regular.y"
                                                 {
                                                     //printNFA($1);         // 打印NFA
                                                     buildDFA(*(yyvsp[-1].exprval));              // 构建DFA
                                                     //printDFA(dfa_generated);    // 打印DFA
                                                     simplifyDFA(dfa_generated);                 // 简化DFA
-                                                    //printDFA(dfa_simplified);   // 打印简化后的DFA
+                                                    printDFA(dfa_simplified);   // 打印简化后的DFA
                                                     CurrentState = 0;
                                                     return 0;
                                                 }
-#line 1157 "src/regular.cpp"
+#line 1159 "src/regular.cpp"
     break;
 
   case 3: /* line: QUIT  */
-#line 51 "src/regular.y"
-                                                { return 1; }
-#line 1163 "src/regular.cpp"
-    break;
-
-  case 5: /* Expr: Expr OR UnitSeq  */
-#line 55 "src/regular.y"
-                                                   { (yyval.exprval) = orExprval((yyvsp[-2].exprval),(yyvsp[0].exprval)); free((yyvsp[-2].exprval)); free((yyvsp[0].exprval)); }
+#line 53 "src/regular.y"
+                                                { if(ot_flag == 1)
+                                                    return 1;
+                                                  else 
+                                                    exit(0);
+                                                }
 #line 1169 "src/regular.cpp"
     break;
 
-  case 6: /* Expr: UnitSeq  */
-#line 56 "src/regular.y"
-                                               { (yyval.exprval) = (yyvsp[0].exprval); }
+  case 5: /* Expr: Expr OR UnitSeq  */
+#line 61 "src/regular.y"
+                                                   { (yyval.exprval) = orExprval((yyvsp[-2].exprval),(yyvsp[0].exprval)); free((yyvsp[-2].exprval)); free((yyvsp[0].exprval)); }
 #line 1175 "src/regular.cpp"
     break;
 
-  case 7: /* UnitSeq: Unit  */
-#line 59 "src/regular.y"
-                                                { (yyval.exprval) = (yyvsp[0].exprval); }
+  case 6: /* Expr: UnitSeq  */
+#line 62 "src/regular.y"
+                                               { (yyval.exprval) = (yyvsp[0].exprval); }
 #line 1181 "src/regular.cpp"
     break;
 
-  case 8: /* UnitSeq: UnitSeq Unit  */
-#line 60 "src/regular.y"
-                                               { (yyval.exprval) = connectExprval((yyvsp[-1].exprval),(yyvsp[0].exprval)); free((yyvsp[-1].exprval)); free((yyvsp[0].exprval)); }
+  case 7: /* UnitSeq: Unit  */
+#line 65 "src/regular.y"
+                                                { (yyval.exprval) = (yyvsp[0].exprval); }
 #line 1187 "src/regular.cpp"
     break;
 
-  case 9: /* Unit: UNIT  */
-#line 63 "src/regular.y"
-                                                { (yyval.exprval) = newExprval((yyvsp[0].chval)); }
+  case 8: /* UnitSeq: UnitSeq Unit  */
+#line 66 "src/regular.y"
+                                               { (yyval.exprval) = connectExprval((yyvsp[-1].exprval),(yyvsp[0].exprval)); free((yyvsp[-1].exprval)); free((yyvsp[0].exprval)); }
 #line 1193 "src/regular.cpp"
     break;
 
-  case 10: /* Unit: Unit CLOSURE  */
-#line 64 "src/regular.y"
-                                                { (yyval.exprval) = closureExprval((yyvsp[-1].exprval)); free((yyvsp[-1].exprval)); }
+  case 9: /* Unit: UNIT  */
+#line 69 "src/regular.y"
+                                                { (yyval.exprval) = newExprval((yyvsp[0].chval)); }
 #line 1199 "src/regular.cpp"
     break;
 
-  case 11: /* Unit: L_BRAC Expr R_BRAC  */
-#line 65 "src/regular.y"
-                                                { (yyval.exprval) = (yyvsp[-1].exprval);}
+  case 10: /* Unit: Unit CLOSURE  */
+#line 70 "src/regular.y"
+                                                { (yyval.exprval) = closureExprval((yyvsp[-1].exprval)); free((yyvsp[-1].exprval)); }
 #line 1205 "src/regular.cpp"
     break;
 
+  case 11: /* Unit: L_BRAC Expr R_BRAC  */
+#line 71 "src/regular.y"
+                                                { (yyval.exprval) = (yyvsp[-1].exprval);}
+#line 1211 "src/regular.cpp"
+    break;
 
-#line 1209 "src/regular.cpp"
+
+#line 1215 "src/regular.cpp"
 
       default: break;
     }
@@ -1398,7 +1404,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 69 "src/regular.y"
+#line 75 "src/regular.y"
 
 
 // programs section

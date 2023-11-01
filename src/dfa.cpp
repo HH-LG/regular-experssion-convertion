@@ -2,6 +2,8 @@
 #include <set>
 #include <algorithm>
 #include <stack>
+#include <iostream>
+#include <locale>
 #include "dfa.h"
 
 using namespace std;
@@ -151,8 +153,9 @@ void printDFA(dfa dfa_t)
     for (auto state: dfa_t.graph)
     {
         for (auto edge: state.second)
-        {
-            printf("\t%d -> %d [label=\"%c\"];\n", state.first, edge.second, edge.first);
+        {            
+            char ch = edge.first;
+            printf("\t%d -> %d [label=\"%c\"];\n", state.first, edge.second, ch);
         }
     }
     for (auto state: dfa_t.finish_state)
