@@ -1,0 +1,35 @@
+.
+├── Makefile
+├── README.md
+├── build
+│   ├── nfa_to_dfa
+│   └── obj
+│       ├── dfa.o
+│       ├── main.o
+│       ├── mini.o
+│       ├── nfa.o
+│       ├── regular.o
+│       └── test.o
+├── include
+│   ├── dfa.h
+│   ├── mini.h
+│   ├── nfa.h
+│   └── test.h
+├── log
+│   └── test.dot
+├── src
+│   ├── dfa.cpp
+│   ├── example_gen.py
+│   ├── main.cpp
+│   ├── mini.cpp
+│   ├── nfa.cpp
+│   ├── regular.cpp
+│   ├── regular.y
+│   └── test.cpp
+├── test
+│   ├── eg
+│   │   └── example[0-999].txt
+│   └── regex.txt
+└── tree.txt
+
+7 directories, 1027 files
