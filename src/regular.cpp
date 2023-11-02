@@ -1151,7 +1151,7 @@ yyreduce:
                                                     buildDFA(*(yyvsp[-1].exprval));              // 构建DFA
                                                     //printDFA(dfa_generated);    // 打印DFA
                                                     simplifyDFA(dfa_generated);                 // 简化DFA
-                                                    printDFA(dfa_simplified);   // 打印简化后的DFA
+                                                    //printDFA(dfa_simplified);   // 打印简化后的DFA
                                                     CurrentState = 0;
                                                     return 0;
                                                 }

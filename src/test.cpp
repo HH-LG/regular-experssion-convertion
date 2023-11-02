@@ -51,7 +51,7 @@ void test_dfa_simplified(char* testfile)
         fprintf(stderr, "%s: fail to open input file\n", testfile);
         exit(EXIT_FAILURE);
     }       
-    //FILE *fp = freopen("./log/test.dot", "w", stdout);
+    //FILE *fp = freopen("./log/test.txt", "w", stdout);
     //if (fp == NULL)
     //{
         //fprintf(stderr, "fail to open output file\n");
